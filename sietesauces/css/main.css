@@ -279,11 +279,15 @@ a:hover { color: var(--accent-hover); }
   font-style: italic;
 }
 
-/* Chart wrapper */
+/* Chart wrapper — rompe el max-width del .main para usar todo el ancho */
 .chart-wrapper {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 0 2rem;
+  box-sizing: border-box;
 }
 
 .chart-meta {
