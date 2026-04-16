@@ -9,17 +9,18 @@
 
 :root {
   --bg:           #ffffff;
-  --surface:      #f5f5f3;
-  --border:       #e4e4e0;
-  --border-focus: #2c4a6e;
-  --text:         #1a1a2e;
-  --text-muted:   #737373;
-  --text-faint:   #b0b0a8;
-  --accent:       #2c4a6e;
-  --accent-hover: #1a3050;
+  --surface:      #EFEBE7;
+  --border:       #ddd8d2;
+  --border-focus: #2A3147;
+  --text:         #2A3147;
+  --text-muted:   #6b6672;
+  --text-faint:   #b0a898;
+  --accent:       #375EFB;
+  --accent-hover: #2244e8;
+  --header-bg:    #2A3147;
   --danger:       #b04040;
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --radius:       4px;
+  --font: 'Fustat', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius:       2px;
   --ease:         0.18s ease;
   --max-w:        1080px;
 }
@@ -54,8 +55,8 @@ a:hover { color: var(--accent-hover); }
   position: sticky;
   top: 0;
   z-index: 10;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
+  background: var(--header-bg);
+  border-bottom: none;
 }
 
 .header-inner {
@@ -74,25 +75,25 @@ a:hover { color: var(--accent-hover); }
   gap: 0.75rem;
 }
 
-.brand-name {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text);
+.brand-logo {
+  height: 28px;
+  width: auto;
+  display: block;
 }
 
 .brand-sep {
   display: block;
   width: 1px;
   height: 16px;
-  background: var(--border);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .brand-subtitle {
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 /* ──────────────────────────────────────────────
@@ -103,21 +104,23 @@ a:hover { color: var(--accent-hover); }
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 0.45rem 1.1rem;
+  padding: 0.45rem 1.25rem;
   font-family: var(--font);
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.01em;
-  border-radius: var(--radius);
+  border-radius: 100px;
   border: 1px solid transparent;
   cursor: pointer;
   transition:
     background var(--ease),
     border-color var(--ease),
-    color var(--ease);
+    color var(--ease),
+    transform var(--ease);
   text-decoration: none;
   white-space: nowrap;
 }
+.btn:hover { transform: scale(1.03); }
 
 .btn-primary {
   background: var(--accent);
@@ -129,14 +132,16 @@ a:hover { color: var(--accent-hover); }
   border-color: var(--accent-hover);
 }
 
+/* btn-outline en header oscuro */
 .btn-outline {
   background: transparent;
-  color: var(--text);
-  border-color: var(--border);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.35);
 }
 .btn-outline:hover {
-  border-color: var(--text-muted);
-  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
 }
 
 .btn-lg {
@@ -182,10 +187,16 @@ a:hover { color: var(--accent-hover); }
   color: var(--text-faint);
 }
 
+.login-logo {
+  height: 40px;
+  width: auto;
+  margin-bottom: 0.25rem;
+}
+
 .login-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 300;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text);
   line-height: 1.1;
@@ -451,14 +462,15 @@ a:hover { color: var(--accent-hover); }
    Footer
    ────────────────────────────────────────────── */
 .footer {
-  border-top: 1px solid var(--border);
+  background: var(--header-bg);
+  border-top: none;
   padding: 1.1rem 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
   font-size: 12px;
-  color: var(--text-faint);
+  color: rgba(255, 255, 255, 0.4);
   letter-spacing: 0.03em;
 }
 
@@ -467,13 +479,13 @@ a:hover { color: var(--accent-hover); }
   border: none;
   font-family: var(--font);
   font-size: 12px;
-  color: var(--text-faint);
+  color: rgba(255, 255, 255, 0.4);
   cursor: pointer;
   padding: 0;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.btn-export:hover { color: var(--accent); }
+.btn-export:hover { color: rgba(255, 255, 255, 0.85); }
 
 /* ──────────────────────────────────────────────
    Utilities
