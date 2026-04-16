@@ -22,7 +22,6 @@
   --radius:       4px;
   --ease:         0.18s ease;
   --max-w:        1080px;
-  --chart-h:      560px;
 }
 
 html, body {
@@ -319,7 +318,7 @@ a:hover { color: var(--accent-hover); }
 .chart-area {
   position: relative;
   width: 100%;
-  height: var(--chart-h);
+  aspect-ratio: 16 / 9;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -493,5 +492,5 @@ a:hover { color: var(--accent-hover); }
   .brand-subtitle { display: none; }
   .select-field { min-width: 0; width: 100%; }
   .selector-group { width: 100%; }
-  :root { --chart-h: 380px; }
+  .chart-area { aspect-ratio: 4 / 3; }
 }

@@ -10,6 +10,13 @@ let accessToken = null;
 // Map: spreadsheetId → { id, name, chartOid, bafoGid }
 const sheetsMap = new Map();
 
+// Limpia el nombre del campo: saca el prefijo tipo "7S_BaFo_2627_v01 "
+// y deja solo el nombre real (lo que viene después del primer espacio)
+function cleanFieldName(rawName) {
+  const idx = rawName.indexOf(' ');
+  return idx !== -1 ? rawName.slice(idx + 1).trim() : rawName;
+}
+
 // Obtener URL para un spreadsheet:
 // 1. published-urls.js (compartido, en el repo)
 // 2. localStorage (personal, del usuario actual)
@@ -127,20 +134,20 @@ async function loadSheetList() {
     const results = await Promise.all(files.map(f => fetchChartInfo(f)));
 
     // Populate select
-    select.innerHTML = '<option value="">— Seleccioná un lote —</option>';
+    select.innerHTML = '<option value="">— Seleccioná un campo —</option>';
     let found = 0;
     results.forEach(sheet => {
       if (!sheet.chartOid) return;
       sheetsMap.set(sheet.id, sheet);
       const opt = document.createElement('option');
       opt.value = sheet.id;
-      opt.textContent = sheet.name;
+      opt.textContent = cleanFieldName(sheet.name);
       select.appendChild(opt);
       found++;
     });
 
     const skipped = results.length - found;
-    let statusMsg = `${found} lote${found !== 1 ? 's' : ''} cargado${found !== 1 ? 's' : ''}`;
+    let statusMsg = `${found} campo${found !== 1 ? 's' : ''} cargado${found !== 1 ? 's' : ''}`;
     if (skipped > 0) statusMsg += ` (${skipped} sin gráfico)`;
     setStatus(statusMsg);
     select.disabled = false;
@@ -241,8 +248,8 @@ function handleSheetChange(spreadsheetId) {
   const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheet.id}/edit#gid=${sheet.bafoGid}`;
   document.getElementById('chart-sheet-link').href = sheetUrl;
 
-  // Nombre del lote
-  metaName.textContent = sheet.name;
+  // Nombre del campo (limpio)
+  metaName.textContent = cleanFieldName(sheet.name);
   meta.classList.remove('hidden');
 
   // URL: preferir la guardada en localStorage (formato 2PACX-),

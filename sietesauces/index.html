@@ -17,7 +17,7 @@
         <div class="brand">
           <span class="brand-name">BAFO</span>
           <span class="brand-sep"></span>
-          <span class="brand-subtitle">Resumen de lotes</span>
+          <span class="brand-subtitle">Resumen de campos</span>
         </div>
         <button id="btn-auth" class="btn btn-outline" onclick="handleAuth()">
           Ingresar
@@ -33,7 +33,7 @@
           <p class="login-eyebrow">Dashboard ganadero</p>
           <h1 class="login-title">BAFO</h1>
           <p class="login-body">
-            Iniciá sesión con tu cuenta Google para acceder a los gráficos de lotes.
+            Iniciá sesión con tu cuenta Google para acceder a los gráficos de campos.
           </p>
           <button class="btn btn-primary btn-lg" onclick="handleAuth()">
             Ingresar con Google
@@ -46,10 +46,10 @@
 
         <div class="toolbar">
           <div class="selector-group">
-            <label class="selector-label" for="select-sheet">Lote</label>
+            <label class="selector-label" for="select-sheet">Campo</label>
             <div class="select-wrap">
               <select id="select-sheet" class="select-field" onchange="handleSheetChange(this.value)">
-                <option value="">— Seleccioná un lote —</option>
+                <option value="">— Seleccioná un campo —</option>
               </select>
               <svg class="select-arrow" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -73,7 +73,7 @@
                 <path d="M14 30l6-8 5 6 5-8 6 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M6 16h36" stroke="currentColor" stroke-width="1.5"/>
               </svg>
-              <p>Seleccioná un lote para ver el gráfico</p>
+              <p>Seleccioná un campo para ver el gráfico</p>
             </div>
 
             <div id="state-loading" class="state-center hidden">
@@ -85,6 +85,7 @@
               id="chart-frame"
               class="chart-frame hidden"
               frameborder="0"
+              scrolling="no"
               allowfullscreen
               title="Gráfico BAFO: GENERAL"
             ></iframe>
