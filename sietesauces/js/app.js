@@ -10,6 +10,13 @@ let accessToken = null;
 // Map: spreadsheetId → { id, name, chartOid, bafoGid }
 const sheetsMap = new Map();
 
+// Limpia el nombre del campo: saca el prefijo tipo "7S_BaFo_2627_v01 "
+// y deja solo el nombre real (lo que viene después del primer espacio)
+function cleanFieldName(rawName) {
+  const idx = rawName.indexOf(' ');
+  return idx !== -1 ? rawName.slice(idx + 1).trim() : rawName;
+}
+
 // Obtener URL para un spreadsheet:
 // 1. published-urls.js (compartido, en el repo)
 // 2. localStorage (personal, del usuario actual)
@@ -127,20 +134,20 @@ async function loadSheetList() {
     const results = await Promise.all(files.map(f => fetchChartInfo(f)));
 
     // Populate select
-    select.innerHTML = '<option value="">— Seleccioná un lote —</option>';
+    select.innerHTML = '<option value="">— Seleccioná un campo —</option>';
     let found = 0;
     results.forEach(sheet => {
       if (!sheet.chartOid) return;
       sheetsMap.set(sheet.id, sheet);
       const opt = document.createElement('option');
       opt.value = sheet.id;
-      opt.textContent = sheet.name;
+      opt.textContent = cleanFieldName(sheet.name);
       select.appendChild(opt);
       found++;
     });
 
     const skipped = results.length - found;
-    let statusMsg = `${found} lote${found !== 1 ? 's' : ''} cargado${found !== 1 ? 's' : ''}`;
+    let statusMsg = `${found} campo${found !== 1 ? 's' : ''} cargado${found !== 1 ? 's' : ''}`;
     if (skipped > 0) statusMsg += ` (${skipped} sin gráfico)`;
     setStatus(statusMsg);
     select.disabled = false;
@@ -212,6 +219,82 @@ async function fetchChartInfo(file) {
 }
 
 // ──────────────────────────────────────────────
+// Tabla de cabezas por categoría
+// ──────────────────────────────────────────────
+
+async function loadTableData(sheet) {
+  const wrapper   = document.getElementById('bafo-table-wrapper');
+  const container = document.getElementById('bafo-table-container');
+  wrapper.classList.add('hidden');
+  container.innerHTML = '';
+
+  try {
+    // B73:N94 — fila 73: cabeceras de mes | B75:B94: categorías | C75:N94: valores
+    const range = encodeURIComponent(`${CONFIG.sheetName}!B73:N94`);
+    const data  = await gFetch(
+      `https://sheets.googleapis.com/v4/spreadsheets/${sheet.id}/values/${range}`
+    );
+    const rows = data.values || [];
+    if (rows.length < 3) return;
+
+    // Fila 0 = row 73: B73 vacío + C73:N73 meses
+    const monthHeaders = (rows[0] || []).slice(1);
+
+    // Filas 2+ = rows 75-94 (saltamos row 74 que es vacío/label)
+    const dataRows = rows.slice(2);
+
+    // Filtrar: solo categorías con al menos un valor no-cero
+    const tableRows = dataRows
+      .filter(row => row && row[0] && row[0].trim() !== '')
+      .map(row => ({
+        category: row[0].trim(),
+        values:   row.slice(1),
+      }))
+      .filter(r => r.values.some(v => v && parseFloat(v) !== 0));
+
+    if (!tableRows.length) return;
+
+    // Columnas activas: meses con al menos un valor en las filas filtradas
+    const activeCols = monthHeaders
+      .map((month, i) => ({ month, i }))
+      .filter(({ i }) =>
+        tableRows.some(r => {
+          const v = r.values[i];
+          return v && parseFloat(v) !== 0;
+        })
+      );
+
+    if (!activeCols.length) return;
+
+    // Render
+    const thead = `<thead><tr>
+      <th class="tbl-category"></th>
+      ${activeCols.map(c => `<th class="tbl-month">${c.month}</th>`).join('')}
+    </tr></thead>`;
+
+    const tbody = `<tbody>${tableRows.map(row => {
+      const cells = activeCols.map(({ i }) => {
+        const raw = row.values[i];
+        const num = parseFloat(raw);
+        const display = (!raw || isNaN(num) || num === 0)
+          ? ''
+          : Number.isInteger(num)
+            ? num.toLocaleString('es-AR')
+            : num.toLocaleString('es-AR', { maximumFractionDigits: 1 });
+        return `<td class="tbl-value">${display}</td>`;
+      }).join('');
+      return `<tr><td class="tbl-category">${row.category}</td>${cells}</tr>`;
+    }).join('')}</tbody>`;
+
+    container.innerHTML = `<table class="bafo-table">${thead}${tbody}</table>`;
+    wrapper.classList.remove('hidden');
+
+  } catch (err) {
+    console.warn('[BAFO] No se pudo cargar la tabla de cabezas:', err);
+  }
+}
+
+// ──────────────────────────────────────────────
 // Mostrar gráfico seleccionado
 // ──────────────────────────────────────────────
 
@@ -229,6 +312,7 @@ function handleSheetChange(spreadsheetId) {
   if (!spreadsheetId) {
     meta.classList.add('hidden');
     urlSetup.classList.add('hidden');
+    document.getElementById('bafo-table-wrapper').classList.add('hidden');
     showChartState('state-placeholder');
     frame.src = '';
     return;
@@ -241,9 +325,12 @@ function handleSheetChange(spreadsheetId) {
   const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheet.id}/edit#gid=${sheet.bafoGid}`;
   document.getElementById('chart-sheet-link').href = sheetUrl;
 
-  // Nombre del lote
-  metaName.textContent = sheet.name;
+  // Nombre del campo (limpio)
+  metaName.textContent = cleanFieldName(sheet.name);
   meta.classList.remove('hidden');
+
+  // Cargar tabla de cabezas (asíncrono, no bloquea el gráfico)
+  loadTableData(sheet);
 
   // URL: preferir la guardada en localStorage (formato 2PACX-),
   // si no hay, intentar con el ID directo del spreadsheet.

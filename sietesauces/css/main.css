@@ -22,7 +22,6 @@
   --radius:       4px;
   --ease:         0.18s ease;
   --max-w:        1080px;
-  --chart-h:      560px;
 }
 
 html, body {
@@ -319,7 +318,7 @@ a:hover { color: var(--accent-hover); }
 .chart-area {
   position: relative;
   width: 100%;
-  height: var(--chart-h);
+  height: 600px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -485,6 +484,70 @@ a:hover { color: var(--accent-hover); }
 }
 
 /* ──────────────────────────────────────────────
+   Tabla BAFO
+   ────────────────────────────────────────────── */
+.bafo-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.bafo-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.bafo-table thead th {
+  padding: 0.45rem 0.75rem;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  text-align: right;
+}
+
+.bafo-table thead th:first-child {
+  text-align: left;
+}
+
+.bafo-table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid var(--border);
+}
+
+.bafo-table tbody tr:hover td {
+  background: var(--surface);
+}
+
+.bafo-table td {
+  padding: 0.4rem 0.75rem;
+  color: var(--text);
+}
+
+.tbl-category {
+  font-weight: 500;
+  color: var(--text);
+  text-align: left;
+  min-width: 120px;
+}
+
+.tbl-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  min-width: 52px;
+}
+
+.tbl-value:not(:empty) {
+  color: var(--text);
+}
+
+/* ──────────────────────────────────────────────
    Responsive
    ────────────────────────────────────────────── */
 @media (max-width: 600px) {
@@ -493,5 +556,5 @@ a:hover { color: var(--accent-hover); }
   .brand-subtitle { display: none; }
   .select-field { min-width: 0; width: 100%; }
   .selector-group { width: 100%; }
-  :root { --chart-h: 380px; }
+  .chart-area { height: 420px; }
 }
