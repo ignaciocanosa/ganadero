@@ -318,11 +318,7 @@ a:hover { color: var(--accent-hover); }
 .chart-area {
   position: relative;
   width: 100%;
-<<<<<<< HEAD
   height: 600px;
-=======
-  aspect-ratio: 16 / 9;
->>>>>>> 554dcde6961d97ddd636f9e00228957ccdcf0d72
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
