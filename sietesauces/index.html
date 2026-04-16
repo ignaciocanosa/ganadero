@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAFO — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="layout">
+
+    <header class="header">
+      <div class="header-inner">
+        <div class="brand">
+          <span class="brand-name">BAFO</span>
+          <span class="brand-sep"></span>
+          <span class="brand-subtitle">Resumen de lotes</span>
+        </div>
+        <button id="btn-auth" class="btn btn-outline" onclick="handleAuth()">
+          Ingresar
+        </button>
+      </div>
+    </header>
+
+    <main class="main">
+
+      <!-- Estado: no autenticado -->
+      <section id="section-login" class="section-center">
+        <div class="login-card">
+          <p class="login-eyebrow">Dashboard ganadero</p>
+          <h1 class="login-title">BAFO</h1>
+          <p class="login-body">
+            Iniciá sesión con tu cuenta Google para acceder a los gráficos de lotes.
+          </p>
+          <button class="btn btn-primary btn-lg" onclick="handleAuth()">
+            Ingresar con Google
+          </button>
+        </div>
+      </section>
+
+      <!-- Estado: autenticado -->
+      <section id="section-dashboard" class="section-dashboard hidden">
+
+        <div class="toolbar">
+          <div class="selector-group">
+            <label class="selector-label" for="select-sheet">Lote</label>
+            <div class="select-wrap">
+              <select id="select-sheet" class="select-field" onchange="handleSheetChange(this.value)">
+                <option value="">— Seleccioná un lote —</option>
+              </select>
+              <svg class="select-arrow" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span id="sheets-status" class="status-text"></span>
+          </div>
+        </div>
+
+        <div class="chart-wrapper">
+          <div id="chart-meta" class="chart-meta hidden">
+            <span id="chart-meta-name" class="chart-meta-name"></span>
+            <span class="chart-meta-label">· BAFO: GENERAL</span>
+            <a id="chart-sheet-link" href="#" target="_blank" class="chart-meta-open">Abrir en Sheets ↗</a>
+          </div>
+
+          <div id="chart-area" class="chart-area">
+            <div id="state-placeholder" class="state-center">
+              <svg class="state-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="6" y="8" width="36" height="32" rx="3" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M14 30l6-8 5 6 5-8 6 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 16h36" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              <p>Seleccioná un lote para ver el gráfico</p>
+            </div>
+
+            <div id="state-loading" class="state-center hidden">
+              <div class="spinner"></div>
+              <p>Cargando gráfico…</p>
+            </div>
+
+            <iframe
+              id="chart-frame"
+              class="chart-frame hidden"
+              frameborder="0"
+              allowfullscreen
+              title="Gráfico BAFO: GENERAL"
+            ></iframe>
+          </div>
+
+          <!-- Configuración de URL publicada (una vez por lote) -->
+          <details id="url-setup" class="url-setup hidden">
+            <summary class="url-setup-summary">¿El gráfico no carga? Configurar URL publicada →</summary>
+            <div class="url-setup-body">
+              <p class="url-setup-hint">
+                En Google Sheets: click en el gráfico → ⋮ → <strong>Publicar gráfico</strong> → copiar la URL del campo
+              </p>
+              <div class="url-setup-row">
+                <input
+                  id="url-input"
+                  class="url-input"
+                  type="url"
+                  placeholder="https://docs.google.com/spreadsheets/d/e/2PACX-.../pubchart?oid=..."
+                >
+                <button class="btn btn-primary" onclick="savePublishedUrl()">Guardar</button>
+              </div>
+            </div>
+          </details>
+        </div>
+
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <span>Ganadero &mdash; BAFO dashboard</span>
+      <button id="btn-export" class="btn-export hidden" onclick="exportConfig()" title="Exportar URLs configuradas para compartir con todos los usuarios">
+        Exportar configuración
+      </button>
+    </footer>
+
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/published-urls.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="js/app.js" defer></script>
+</body>
+</html>
