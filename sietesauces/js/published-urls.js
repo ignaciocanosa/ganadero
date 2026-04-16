@@ -12,7 +12,7 @@
  */
 
 const PUBLISHED_URLS = {
-  '1KZpAed-1qrlw7BRHl6TpfDXCHuwnvx1AoySAR4bjFKI': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRd-h50B-7j3w_VwWFZCM7OnOweUmm4JHgo0lmkaThjKcZdHqvuOQS4Q6D7jczBFr_wj3NTkn8CR0cs/pubchart?oid=2141930853&format=interactive',
+  '1KZpAed-1qrlw7BRHl6TpfDXCHuwnvx1AoySAR4bjFKI': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRd-h50B-7j3w_VwWFZCM7OnOweUmm4JHgo0lmkaThjKcZdHqvuOQS4Q6D7jczBFr_wj3NTkn8CR0cs/pubchart?oid=1572202222&format=interactive',
   '14qtMGnPAY_TJy6MA1zSuZjFmIxubDJvGim7w7Zbp48U': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTsWFnUOUDjnvcXbsR6uXmkAXFJD6Oh4zJ7_fMquORR5BKtgFGp0A7ystLK5MZuBhjm7YqFbtJ7UTEm/pubchart?oid=1572202222&format=interactive',
   '1ShhamXEuIJMmtzFqljK6hw6EHgyhQZJdiKptQWx55oU': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQg53sp3f3Wp3jCDLZsmfm_oJz94A-NqRm1VJRP2aeXuVJmqGTmVn4_SJyvyO2yYqpPQgrcCYb_iPgK/pubchart?oid=1572202222&format=interactive',
   '1agL4QuLmVq3-Prft4IBapafhy17i8mI8M_-nTdAaWwQ': 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTBLrUvzXECLgWmaNMl1hcRh0BeSk9nRqHKQc58VCCqzl5U5xdpsXfK05MWnfwAsZPAoU8ETubB6jRf/pubchart?oid=1572202222&format=interactive',
